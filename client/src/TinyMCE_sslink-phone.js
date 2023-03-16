@@ -121,7 +121,6 @@ jQuery.entwine('ss', ($) => {
             let phone = attributes.href.replace(/^tel:/, '').replace(/^sms:/, '');
 
             if (phone) {
-                console.log(currentCommand);
                 href = currentCommand == commandNamePhone ? `tel:${phone}` : `sms:${phone}`;
             }
             attributes.href = href;
