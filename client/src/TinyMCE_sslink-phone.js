@@ -31,17 +31,19 @@ TinyMCEActionRegistrar
     })
     .addCommandWithUrlTest(commandNameSMS, /^sms:/);
 
+var currentCommand = commandNamePhone;
+
 const plugin = {
     init(editor) {
-        editor.addCommand(commandName, () => {
+        editor.addCommand(commandNamePhone, () => {
             const field = window.jQuery(`#${editor.id}`).entwine('ss');
-
-            field.openLinkPhoneDialog('phone');
+            currentCommand = commandNamePhone;
+            field.openLinkPhoneDialog();
         });
         editor.addCommand(commandNameSMS, () => {
             const field = window.jQuery(`#${editor.id}`).entwine('ss');
-
-            field.openLinkPhoneDialog('sms');
+            currentCommand = commandNameSMS;
+            field.openLinkPhoneDialog();
         });
     },
 };
@@ -56,8 +58,6 @@ jQuery.entwine('ss', ($) => {
     $('textarea.htmleditor').entwine({
         openLinkPhoneDialog(type) {
             let dialog = $(`#${modalId}`);
-
-            dialog.type = type;
 
             if (!dialog.length) {
                 dialog = $(`<div id="${modalId}" />`);
@@ -98,11 +98,11 @@ jQuery.entwine('ss', ($) => {
                 />,
                 this[0]
             );
-
         },
 
         getOriginalAttributes() {
             const editor = this.getElement().getEditor();
+
             const node = $(editor.getSelectedNode());
 
             let phone = (node.attr('href') || '').replace(/^tel:/, '').replace(/^sms:/, '');
@@ -121,8 +121,8 @@ jQuery.entwine('ss', ($) => {
             let phone = attributes.href.replace(/^tel:/, '').replace(/^sms:/, '');
 
             if (phone) {
-                href = `tel:${phone}`;
-                console.log('in phone'+this.type);
+                console.log(currentCommand);
+                href = currentCommand == commandNamePhone ? `tel:${phone}` : `sms:${phone}`;
             }
             attributes.href = href;
 
