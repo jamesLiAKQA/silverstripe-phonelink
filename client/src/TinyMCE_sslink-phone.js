@@ -56,7 +56,7 @@ const InsertLinkPhoneModal = loadComponent(createInsertLinkModal(sectionConfigKe
 
 jQuery.entwine('ss', ($) => {
     $('textarea.htmleditor').entwine({
-        openLinkPhoneDialog(type) {
+        openLinkPhoneDialog() {
             let dialog = $(`#${modalId}`);
 
             if (!dialog.length) {
