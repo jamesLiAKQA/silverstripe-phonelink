@@ -14,7 +14,7 @@ const commandName = 'sslinksms';
 // Link to phone number
 TinyMCEActionRegistrar
     .addAction('sslink', {
-        text: i18n._t('Admin.LINKLABEL_PHONE', 'Link to phone number'),
+        text: i18n._t('Admin.LINKLABEL_PHONE', 'Link to sms number'),
         // eslint-disable-next-line no-console
         onclick: (editor) => editor.execCommand(commandName),
         priority: 51,
@@ -72,7 +72,7 @@ jQuery.entwine('ss', ($) => {
                 isOpen={isOpen}
                 onInsert={handleInsert}
                 onClosed={handleHide}
-                title={i18n._t('Admin.LINK_PHONE', 'Insert phone number link')}
+                title={i18n._t('Admin.LINK_SMS', 'Insert sms number link')}
                 bodyClassName="modal__dialog"
                 className="insert-link__dialog-wrapper--phone"
                 fileAttributes={attrs}
