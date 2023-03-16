@@ -9,24 +9,39 @@ import {loadComponent} from 'lib/Injector';
 import 'lang/en.js';
 import 'lang/fr.js';
 
-const commandName = 'sslinkphone';
+const commandNamePhone = 'sslinkphone';
+const commandNameSMS = 'sslinksms';
 
 // Link to phone number
 TinyMCEActionRegistrar
     .addAction('sslink', {
         text: i18n._t('Admin.LINKLABEL_PHONE', 'Link to phone number'),
         // eslint-disable-next-line no-console
-        onclick: (editor) => editor.execCommand(commandName),
+        onclick: (editor) => editor.execCommand(commandNamePhone),
         priority: 51,
     })
-    .addCommandWithUrlTest(commandName, /^tel:/);
+    .addCommandWithUrlTest(commandNamePhone, /^tel:/);
+
+TinyMCEActionRegistrar
+    .addAction('sslink', {
+        text: i18n._t('Admin.LINKLABEL_SMS', 'Link to phone number'),
+        // eslint-disable-next-line no-console
+        onclick: (editor) => editor.execCommand(commandNameSMS),
+        priority: 51,
+    })
+    .addCommandWithUrlTest(commandNameSMS, /^sms:/);
 
 const plugin = {
     init(editor) {
         editor.addCommand(commandName, () => {
             const field = window.jQuery(`#${editor.id}`).entwine('ss');
 
-            field.openLinkPhoneDialog();
+            field.openLinkPhoneDialog('phone');
+        });
+        editor.addCommand(commandNameSMS, () => {
+            const field = window.jQuery(`#${editor.id}`).entwine('ss');
+
+            field.openLinkPhoneDialog('sms');
         });
     },
 };
@@ -39,8 +54,10 @@ const InsertLinkPhoneModal = loadComponent(createInsertLinkModal(sectionConfigKe
 
 jQuery.entwine('ss', ($) => {
     $('textarea.htmleditor').entwine({
-        openLinkPhoneDialog() {
+        openLinkPhoneDialog(type) {
             let dialog = $(`#${modalId}`);
+
+            dialog.type = type;
 
             if (!dialog.length) {
                 dialog = $(`<div id="${modalId}" />`);
@@ -88,7 +105,7 @@ jQuery.entwine('ss', ($) => {
             const editor = this.getElement().getEditor();
             const node = $(editor.getSelectedNode());
 
-            let phone = (node.attr('href') || '').replace(/^tel:/, '');
+            let phone = (node.attr('href') || '').replace(/^tel:/, '').replace(/^sms:/, '');
 
             return {
                 Link: phone,
@@ -101,10 +118,11 @@ jQuery.entwine('ss', ($) => {
 
             let href = '';
 
-            let phone = attributes.href.replace(/^tel:/, '');
+            let phone = attributes.href.replace(/^tel:/, '').replace(/^sms:/, '');
 
             if (phone) {
                 href = `tel:${phone}`;
+                console.log('in phone'+this.type);
             }
             attributes.href = href;
 
@@ -116,5 +134,6 @@ jQuery.entwine('ss', ($) => {
 });
 
 // Adds the plugin class to the list of available TinyMCE plugins
-tinymce.PluginManager.add(commandName, (editor) => plugin.init(editor));
+tinymce.PluginManager.add(commandNamePhone, (editor) => plugin.init(editor));
+
 export default plugin;

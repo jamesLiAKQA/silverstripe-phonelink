@@ -10,7 +10,5 @@ call_user_func(function () {
     TinyMCEConfig::get('cms')
         ->enablePlugins([
             'sslinkphone' => $module->getResource('client/dist/js/TinyMCE_sslink-phone.js'),
-        ])->enablePlugins([
-            'sslinksms' => $module->getResource('client/dist/js/TinyMCE_sslink-sms.js'),
         ]);
 });

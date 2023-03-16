@@ -23,7 +23,6 @@ const config = [
         name: 'js',
         entry: {
             'TinyMCE_sslink-phone': `${PATHS.SRC}/TinyMCE_sslink-phone.js`,
-            'TinyMCE_sslink-sms': `${PATHS.SRC}/TinyMCE_sslink-sms.js`,
         },
         output: {
             path: PATHS.DIST,
