@@ -89,7 +89,12 @@ jQuery.entwine('ss', ($) => {
                 isOpen={isOpen}
                 onInsert={handleInsert}
                 onClosed={handleHide}
-                title={i18n._t('Admin.LINK_PHONE', 'Insert phone number link')}
+                title={i18n._t(
+                    'Admin.LINK_PHONE',
+                    'Insert '
+                    + (currentCommand == commandNamePhone ? 'phone': 'sms')
+                    + ' number link'
+                    )}
                 bodyClassName="modal__dialog"
                 className="insert-link__dialog-wrapper--phone"
                 fileAttributes={attrs}
