@@ -83,18 +83,19 @@ jQuery.entwine('ss', ($) => {
             const tagName = selection.getNode().tagName;
             const requireLinkText = tagName !== 'A' && selectionContent.trim() === '';
 
+            console.log('render: ' + currentCommand);
+
+            const title = 'Insert '
+                + (currentCommand == commandNamePhone ? 'phone': 'sms')
+                + ' number link';
+
             // create/update the react component
             ReactDOM.render(
                 <InsertLinkPhoneModal
                 isOpen={isOpen}
                 onInsert={handleInsert}
                 onClosed={handleHide}
-                title={i18n._t(
-                    'Admin.LINK_PHONE',
-                    'Insert '
-                    + (currentCommand == commandNamePhone ? 'phone': 'sms')
-                    + ' number link'
-                    )}
+                title={title}
                 bodyClassName="modal__dialog"
                 className="insert-link__dialog-wrapper--phone"
                 fileAttributes={attrs}
